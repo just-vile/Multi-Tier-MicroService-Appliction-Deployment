@@ -7,10 +7,8 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install
 
-
 sudo apt update
 sudo apt install fontconfig openjdk-17-jre -y
-
 
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
   https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
@@ -31,7 +29,6 @@ mkdir -p ~/.local/bin
 mv ./kubectl ~/.local/bin/kubectl
 kubectl version --client
 
-
 curl -s --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 
@@ -41,7 +38,6 @@ sudo usermod -aG docker jenkins
 sudo newgrp docker
 
 sudo chmod 666 /var/run/docker.sock
-
 
 sudo systemctl restart docker
 sudo systemctl restart jenkins

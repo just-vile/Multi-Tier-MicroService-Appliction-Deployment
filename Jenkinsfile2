@@ -177,7 +177,6 @@ pipeline {
         stage('K8-Deploy') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'eks-server-url', variable: 'SERVER_URL')]) {
                         withKubeConfig(
                             caCertificate: '', 
                             clusterName: 'my-eks2', 
@@ -185,13 +184,12 @@ pipeline {
                             credentialsId: 'k8s-token-webapps', 
                             namespace: 'webapps', 
                             restrictKubeConfigAccess: false, 
-                            serverUrl: "${SERVER_URL}"
+                            serverUrl: 'eks-server-url'
                         ) {
                             sh 'kubectl apply -f deployment-service.yml'
                             sh 'kubectl get pods'
                             sh 'kubectl get svc'
                         }
-                    }
                 }
             }
         }
