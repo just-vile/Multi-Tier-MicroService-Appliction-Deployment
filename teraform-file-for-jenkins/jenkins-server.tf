@@ -17,7 +17,7 @@ resource "aws_instance" "tf-jenkins-server" {
     Name = var.jenkins-server-tag
     server = "Jenkins"
   }
-  user_data = file("jenkinsdata.sh")
+  user_data = templatefile("./jenkinsdata.sh", {})
 }
 
 resource "aws_security_group" "tf-jenkins-sec-gr" {
@@ -98,12 +98,4 @@ EOF
 resource "aws_iam_instance_profile" "tf-jenkins-server-profile" {
   name = var.jenkins-profile
   role = aws_iam_role.tf-jenkins-server-role.name
-}
-
-output "JenkinsDNS" {
-  value = aws_instance.tf-jenkins-server.public_dns
-}
-
-output "JenkinsURL" {
-  value = "http://${aws_instance.tf-jenkins-server.public_dns}:8080"
 }
