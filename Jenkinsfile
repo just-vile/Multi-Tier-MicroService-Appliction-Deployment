@@ -26,6 +26,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/adservice') {
                             sh 'docker build -t levi2708/adservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/adservice:latest > trivy_adservice_report.txt || true
+                            cat trivy_adservice_report.txt
+                            '''
+
                             sh "docker push levi2708/adservice:latest"
                             sh "docker rmi levi2708/adservice:latest"
                         }
@@ -40,6 +46,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/cartservice/src/') {
                             sh 'docker build -t levi2708/cartservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/carservice:latest > trivy_carservice_report.txt || true
+                            cat trivy_carservice_report.txt
+                            '''
+
                             sh "docker push levi2708/cartservice:latest"
                             sh "docker rmi levi2708/cartservice:latest"
                         }
@@ -54,6 +66,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/checkoutservice/') {
                             sh 'docker build -t levi2708/checkoutservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/checkoutservice:latest > trivy_checkoutservice_report.txt || true
+                            cat trivy_checkoutservice_report.txt
+                            '''
+
                             sh "docker push levi2708/checkoutservice:latest"
                             sh "docker rmi levi2708/checkoutservice:latest"
                         }
@@ -68,6 +86,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/currencyservice/') {
                             sh 'docker build -t levi2708/currencyservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/currencyservice:latest > trivy_currencyservice_report.txt || true
+                            cat trivy_currencyservice_report.txt
+                            '''
+
                             sh "docker push levi2708/currencyservice:latest"
                             sh "docker rmi levi2708/currencyservice:latest"
                         }
@@ -82,6 +106,11 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/emailservice/') {
                             sh 'docker build -t levi2708/emailservice:latest .'
+                            sh '''
+                            trivy image levi2708/emailservice:latest > trivy_emailservice_report.txt || true
+                            cat trivy_emailservice_report.txt
+                            '''
+
                             sh "docker push levi2708/emailservice:latest"
                             sh "docker rmi levi2708/emailservice:latest"
                         }
@@ -96,6 +125,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/frontend/') {
                             sh 'docker build -t levi2708/frontend:latest .'
+
+                            sh '''
+                            trivy image levi2708/frontend:latest > trivy_frontend_report.txt || true
+                            cat trivy_frontend_report.txt
+                            '''
+
                             sh "docker push levi2708/frontend:latest"
                             sh "docker rmi levi2708/frontend:latest"
                         }
@@ -110,6 +145,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/loadgenerator/') {
                             sh 'docker build -t levi2708/loadgenerator:latest .'
+
+                            sh '''
+                            trivy image levi2708/loadgenerator:latest > trivy_loadgenerator_report.txt || true
+                            cat trivy_loadgenerator_report.txt
+                            '''
+
                             sh "docker push levi2708/loadgenerator:latest"
                             sh "docker rmi levi2708/loadgenerator:latest"
                         }
@@ -124,6 +165,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/paymentservice/') {
                             sh 'docker build -t levi2708/paymentservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/paymentservice:latest > trivy_paymentservice_report.txt || true
+                            cat trivy_paymentservice_report.txt
+                            '''
+
                             sh "docker push levi2708/paymentservice:latest"
                             sh "docker rmi levi2708/paymentservice:latest"
                         }
@@ -138,6 +185,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/productcatalogservice/') {
                             sh 'docker build -t levi2708/productcatalogservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/productcatalogservice:latest > trivy_productcatalogservice_report.txt || true
+                            cat trivy_productcatalogservice_report.txt
+                            '''
+
                             sh "docker push levi2708/productcatalogservice:latest"
                             sh "docker rmi levi2708/productcatalogservice:latest"
                         }
@@ -152,6 +205,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/recommendationservice/') {
                             sh 'docker build -t levi2708/recommendationservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/recommendationservice:latest > trivy_recommendationservice_report.txt || true
+                            cat trivy_recommendationservice_report.txt
+                            '''
+
                             sh "docker push levi2708/recommendationservice:latest"
                             sh "docker rmi levi2708/recommendationservice:latest"
                         }
@@ -166,6 +225,12 @@ pipeline {
               withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         dir('/var/lib/jenkins/workspace/10-Tier/src/shippingservice/') {
                             sh 'docker build -t levi2708/shippingservice:latest .'
+
+                            sh '''
+                            trivy image levi2708/shippingservice:latest > trivy_shippingservice_report.txt || true
+                            cat trivy_shippingservice_report.txt
+                            '''
+
                             sh "docker push levi2708/shippingservice:latest"
                             sh "docker rmi levi2708/shippingservice:latest"
                         }
