@@ -37,25 +37,25 @@ add them to the cart, and purchase them.
         --without-nodegroup
 
    eksctl utils associate-iam-oidc-provider \
- --region us-east-1 \
- --cluster my-eks2 \
- --approve 
+     --region us-east-1 \
+     --cluster my-eks2 \
+     --approve 
 
-   eksctl create nodegroup --cluster=my-eks2 \
-   --region=us-east-1 \
-   --name=node2 \
-   --node-type=t3.medium \
-   --nodes=3 \
-   --nodes-min=2 \
-   --nodes-max=3 \
-   --node-volume-size=20 \
-   --ssh-public-key=mykey \
-   --managed \
-   --asg-access \
-   --external-dns-access \
-   --full-ecr-access \
-   --appmesh-access \
-   --alb-ingress-access
+     eksctl create nodegroup --cluster=my-eks2 \
+     --region=us-east-1 \
+     --name=node2 \
+     --node-type=t3.medium \
+     --nodes=3 \
+     --nodes-min=2 \
+     --nodes-max=3 \
+     --node-volume-size=20 \
+     --ssh-public-key=mykey \
+     --managed \
+     --asg-access \
+     --external-dns-access \
+     --full-ecr-access \
+     --appmesh-access \
+     --alb-ingress-access
    ```
 
    Creating the cluster may take a few minutes.
