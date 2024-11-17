@@ -2,75 +2,72 @@
 <img src="/src/frontend/static/icons/Hipster_HeroLogoMaroon.svg" width="300" alt="Online Boutique" />
 </p>
 
-![Continuous Integration](https://github.com/GoogleCloudPlatform/microservices-demo/workflows/Continuous%20Integration%20-%20Main/Release/badge.svg)
-
 **Online Boutique** is a cloud-first microservices demo application.
 Online Boutique consists of an 11-tier microservices application. The application is a
 web-based e-commerce app where users can browse items,
 add them to the cart, and purchase them.
 
-Google uses this application to demonstrate the use of technologies like
-Kubernetes, GKE, Istio, Stackdriver, and gRPC. This application
-works on any Kubernetes cluster, like Google
-Kubernetes Engine (GKE). It’s **easy to deploy with little to no configuration**.
-
-If you’re using this demo, please **★Star** this repository to show your interest!
-
-**Note to Googlers (Google employees):** Please fill out the form at [go/microservices-demo](http://go/microservices-demo).
-
-## Screenshots
-
-| Home Page                                                                                                         | Checkout Screen                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [![Screenshot of store homepage](/docs/img/online-boutique-frontend-1.png)](/docs/img/online-boutique-frontend-1.png) | [![Screenshot of checkout screen](/docs/img/online-boutique-frontend-2.png)](/docs/img/online-boutique-frontend-2.png) |
-
-## Interactive quickstart (GKE)
-
-[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https%3A%2F%2Fgithub.com%2FGoogleCloudPlatform%2Fmicroservices-demo&shellonly=true&cloudshell_image=gcr.io/ds-artifacts-cloudshell/deploystack_custom_image)
-
 ## Quickstart (GKE)
 
 1. Ensure you have the following requirements:
-   - [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project).
-   - Shell environment with `gcloud`, `git`, and `kubectl`.
+   - Shell environment with `aws`, `git`, and `kubectl`.
 
 2. Clone the repository.
 
    ```sh
-   git clone https://github.com/GoogleCloudPlatform/microservices-demo
-   cd microservices-demo/
+   git clone https://github.com/just-vile/Multi-Tier-MicroService-Appliction-Deployment.git
    ```
 
-3. Set the Google Cloud project and region and ensure the Google Kubernetes Engine API is enabled.
+3. Navigate to the 'terraform-file-for-jenkins', set the parameters of them suitable for your configurations, and then:
 
    ```sh
-   export PROJECT_ID=<PROJECT_ID>
-   export REGION=us-central1
-   gcloud services enable container.googleapis.com \
-     --project=${PROJECT_ID}
+   terraform init
+   terraform plan
+   terraform apply --auto-approve
    ```
 
-   Substitute `<PROJECT_ID>` with the ID of your Google Cloud project.
+   Then, you have a Jenkins Server on AWS.
 
-4. Create a GKE cluster and get the credentials for it.
+4. Create a EKS Cluster on Jenkins Server.
 
    ```sh
-   gcloud container clusters create-auto online-boutique \
-     --project=${PROJECT_ID} --region=${REGION}
+   eksctl create cluster --name=my-eks2 \
+        --region=us-east-1 \
+        --zones=us-east-1a,us-east-1b \
+        --without-nodegroup
+
+   eksctl utils associate-iam-oidc-provider \
+ --region us-east-1 \
+ --cluster my-eks2 \
+ --approve 
+
+   eksctl create nodegroup --cluster=my-eks2 \
+   --region=us-east-1 \
+   --name=node2 \
+   --node-type=t3.medium \
+   --nodes=3 \
+   --nodes-min=2 \
+   --nodes-max=3 \
+   --node-volume-size=20 \
+   --ssh-public-key=mykey \
+   --managed \
+   --asg-access \
+   --external-dns-access \
+   --full-ecr-access \
+   --appmesh-access \
+   --alb-ingress-access
    ```
 
    Creating the cluster may take a few minutes.
 
 5. Deploy Online Boutique to the cluster.
 
-   ```sh
-   kubectl apply -f ./release/kubernetes-manifests.yaml
-   ```
+   - Modify the Jenkinsfile for your configurations and paste it to Jenkins (You should see PDF report file in this Repo for more information)
 
 6. Wait for the pods to be ready.
 
    ```sh
-   kubectl get pods
+   kubectl get pods -n webapps
    ```
 
    After a few minutes, you should see the Pods in a `Running` state:
@@ -91,38 +88,20 @@ If you’re using this demo, please **★Star** this repository to show your int
    shippingservice-6ccc89f8fd-v686r         1/1     Running   0          2m58s
    ```
 
-7. Access the web frontend in a browser using the frontend's external IP.
-
-   ```sh
-   kubectl get service frontend-external | awk '{print $4}'
-   ```
-
-   Visit `http://EXTERNAL_IP` in a web browser to access your instance of Online Boutique.
-
 8. Once you are done with it, delete the GKE cluster.
 
    ```sh
-   gcloud container clusters delete online-boutique \
-     --project=${PROJECT_ID} --region=${REGION}
+     eksctl delete nodegroup --cluster=my-eks2 --region=us-east-1 --name=node2
+     eksctl delete cluster --name=my-eks2 --region=us-east-1
+
    ```
 
    Deleting the cluster may take a few minutes.
 
-## Use Terraform to provision a GKE cluster and deploy Online Boutique
-
-The [`/terraform` folder](/terraform) contains instructions for using [Terraform](https://www.terraform.io/intro) to replicate the steps from [**Quickstart (GKE)**](#quickstart-gke) above.
-
-## Other deployment variations
-
-- **Istio/Anthos Service Mesh**: [See these instructions.](/kustomize/components/service-mesh-istio/README.md)
-- **non-GKE clusters (Minikube, Kind)**: see the [Development Guide](/docs/development-guide.md)
-
-## Deploy Online Boutique variations with Kustomize
-
-The [`/kustomize` folder](/kustomize) contains instructions for customizing the deployment of Online Boutique with different variations such as:
-* integrating with [Google Cloud Operations](/kustomize/components/google-cloud-operations/)
-* replacing the in-cluster Redis cache with [Google Cloud Memorystore (Redis)](/kustomize/components/memorystore), [AlloyDB](/kustomize/components/alloydb) or [Google Cloud Spanner](/kustomize/components/spanner)
-* etc.
+   Then, back to the folder 'terraform-file-for-jenkins'.
+   ```sh
+    terraform destroy --auto-approve
+   ```
 
 ## Architecture
 
