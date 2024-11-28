@@ -3,7 +3,6 @@ eksctl create cluster --name=my-eks2 \
         --zones=us-east-1a,us-east-1b \
         --without-nodegroup
 
-// after the above setup complete run this
 eksctl utils associate-iam-oidc-provider \
  --region us-east-1 \
  --cluster my-eks2 \

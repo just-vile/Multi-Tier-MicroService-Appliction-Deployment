@@ -18,7 +18,6 @@ pipeline {
                 }
                     
             }
-                
         }
         stage('adservice'){
             steps{
